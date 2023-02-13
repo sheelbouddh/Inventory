@@ -1,6 +1,6 @@
 package com.inventory.product.dao;
 
-import com.inventory.product.dto.Product;
+import com.inventory.product.entity.Product;
 
 import java.util.List;
 

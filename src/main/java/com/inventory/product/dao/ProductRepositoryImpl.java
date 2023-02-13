@@ -1,10 +1,11 @@
 package com.inventory.product.dao;
 
-import com.inventory.product.dto.Product;
+import com.inventory.product.entity.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -41,7 +42,13 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void create(Product p) {
-        int insert = jdbcTemplate.update(INSERT_PRODUCT, p.getProdName(), p.getProdQuantity(), p.getSellerId());
+        int insert = 0;
+        try{
+            insert = jdbcTemplate.update(INSERT_PRODUCT, p.getProdName(), p.getProdQuantity(), p.getSellerId());
+        }catch (HttpMessageNotReadableException ex){
+            log.info("Error in post data");
+        }
+
         if(insert == 1) log.info("New product added: " + p.getProdName());
     }
 

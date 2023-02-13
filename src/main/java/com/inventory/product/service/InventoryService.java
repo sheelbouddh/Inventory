@@ -1,7 +1,8 @@
 package com.inventory.product.service;
 
-import com.inventory.product.dto.Product;
+import com.inventory.product.entity.Product;
 import com.inventory.product.dao.ProductRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,11 +10,12 @@ import java.util.List;
 @Service
 public class InventoryService {
 
+    @Autowired
     private ProductRepositoryImpl productRepository;
 
-    public InventoryService(ProductRepositoryImpl productRepository) {
-        this.productRepository = productRepository;
-    }
+//    public InventoryService(ProductRepositoryImpl productRepository) {
+//        this.productRepository = productRepository;
+//    }
 
     public List<Product> getAllProducts() {
         return productRepository.list();
