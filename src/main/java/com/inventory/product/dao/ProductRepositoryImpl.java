@@ -39,6 +39,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         return jdbcTemplate.query(GET_ALL_PRODUCTS, rowMapper);
     }
 
+
     @Override
     public void create(Product p) {
         int insert = jdbcTemplate.update(INSERT_PRODUCT, p.getProdName(), p.getProdQuantity(), p.getSellerId());
