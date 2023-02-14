@@ -43,11 +43,14 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         try {
             products = jdbcTemplate.query(GET_ALL_PRODUCTS, rowMapper);
+            log.info("products list found");
         }catch (Exception ex){
+            log.info("error getting all list of products");
             throw new InventoryInternalException(ex.getMessage());
         }
 
         if (products.isEmpty()){
+            log.info("database is empty");
             throw new InventoryDatabaseError("Products not found!");
         }
 
@@ -62,11 +65,15 @@ public class ProductRepositoryImpl implements ProductRepository {
         try {
             insert = jdbcTemplate.update(INSERT_PRODUCT, p.getProdName(), p.getProdQuantity(), p.getSellerId());
         }catch (Exception ex){
+            log.info("internal exception while adding product");
             throw new InventoryInternalException(ex.getMessage());
         }
 
         if(insert == 1) log.info("New product added: " + p.getProdName());
-        else throw new InventoryDatabaseError("Product not added");
+        else{
+            log.info("product not found");
+            throw new InventoryDatabaseError("Product not added");
+        }
     }
 
     @Override
@@ -74,7 +81,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         Product product = null;
         try{
             product = jdbcTemplate.queryForObject(GET_PRODUCT_WITH_ID, new Object[]{id}, rowMapper);
+            log.info("product returned");
         }catch (DataAccessException ex){
+            log.info("product not found");
             throw new ProductNotFound("Product not found with id: " + id);
         }
         return product;
@@ -87,11 +96,13 @@ public class ProductRepositoryImpl implements ProductRepository {
         try {
             update = jdbcTemplate.update(UPDATE_PRODUCT, p.getProdName(), p.getProdQuantity(), p.getSellerId(), id);
         }catch (Exception ex){
+            log.info("internal exception while updating product");
             throw new InventoryInternalException(ex.getMessage());
         }
 
         if (update == 1) log.info("Product updated with id: " + id);
         else {
+            log.info("product not found");
             throw new ProductNotFound("Product not found with id: " + id);
         }
     }
@@ -102,10 +113,14 @@ public class ProductRepositoryImpl implements ProductRepository {
         try{
             delete = jdbcTemplate.update(DELETE_PRODUCT, id);
         }catch (Exception ex){
+            log.info("error while deleting product");
             throw new InventoryInternalException(ex.getMessage());
         }
 
         if (delete == 1) log.info("Product removed with id: "+id);
-        else throw new ProductNotFound("Product not found with id: " + id);
+        else{
+            log.info("product not found");
+            throw new ProductNotFound("Product not found with id: " + id);
+        }
     }
 }

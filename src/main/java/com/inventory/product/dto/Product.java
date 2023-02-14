@@ -13,7 +13,7 @@ public class Product {
     private int prodId;
     @NotNull(message = "Product name shouldn't be null")
     private String prodName;
-    @Pattern(regexp = "\\d*", message = "invalid product quantity")
+    @Pattern(regexp = "\\d{2}", message = "invalid product quantity")
     private int prodQuantity;
     @NotNull(message = "Seller id shouldn't be null")
     private int sellerId;
