@@ -16,7 +16,8 @@ import java.util.List;
 @Service
 public class InventoryService {
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
     private ProductRepositoryImpl productRepository;
 
@@ -44,7 +45,7 @@ public class InventoryService {
         try{
             userRole = restTemplate.getForObject(url+userId,String.class);
         }catch (Exception ex){
-            throw new InventoryInternalException("Rest template error");
+            throw new InventoryInternalException("User is not in database hence not allowed to sell");
         }
 
         if(userRole.equals("Seller")){
@@ -52,6 +53,9 @@ public class InventoryService {
         }else{
             throw new NotAllowedToAdd("User with userId: "+ userId+" is a not allowed to Sell Something");
         }
+
+//        Incase running standalone
+//        productRepository.create(product);
 
     }
 
