@@ -2,7 +2,9 @@ package com.inventory.product.exceptionHandler;
 
 import com.inventory.product.exception.InventoryDatabaseError;
 import com.inventory.product.exception.InventoryInternalException;
+import com.inventory.product.exception.NotAllowedToAdd;
 import com.inventory.product.exception.ProductNotFound;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -39,6 +41,12 @@ public class ApplicationExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(InventoryInternalException.class)
     public String internalError(InventoryInternalException ex){
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotAllowedToAdd.class)
+    public String notAllowedToAdd(NotAllowedToAdd ex){
         return ex.getMessage();
     }
 }

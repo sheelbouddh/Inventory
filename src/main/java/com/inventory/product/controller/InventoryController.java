@@ -1,6 +1,7 @@
 package com.inventory.product.controller;
 
 import com.inventory.product.exception.InventoryDatabaseError;
+import com.inventory.product.exception.NotAllowedToAdd;
 import com.inventory.product.exception.ProductNotFound;
 import com.inventory.product.exception.InventoryInternalException;
 import com.inventory.product.service.InventoryService;
@@ -37,7 +38,7 @@ public class InventoryController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/products")
-    public ResponseEntity<String> addProduct(@RequestBody @Valid Product product) throws InventoryInternalException, InventoryDatabaseError {
+    public ResponseEntity<String> addProduct(@RequestBody @Valid Product product) throws InventoryInternalException, InventoryDatabaseError, NotAllowedToAdd {
         inventoryService.addProduct(product);
         return new ResponseEntity<>("New Product Added: "+product.getProdName(), HttpStatus.CREATED);
     }
